@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { UploadProvider } from "@/components/ui/upload";
+import { Header } from "@/components/layouts";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,7 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <TooltipProvider>
+          <div className="min-h-screen gap-16 font-[family-name:var(--font-geist-sans)]">
+            <Header />
+            {children}
+          </div>
+        </TooltipProvider>
       </body>
     </html>
   );
