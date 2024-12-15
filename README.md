@@ -70,7 +70,7 @@ Whether you're showcasing a photo album, flipping through a presentation, or vie
 
 **@duck-pdf** was developed by:
 
-- **Your Name** (Developer & Creator)
+- **Ahmed Ayob (wildduck)** (Developer & Creator)
 
 Feel free to modify and contribute to this project! If you have any feedback or suggestions, please open an issue or submit a pull request.
 
