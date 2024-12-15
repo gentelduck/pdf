@@ -1,6 +1,6 @@
 # @duck-pdf
 
-![@duck-pdf Logo](/og.png)  
+![@duck-pdf Logo](/public/og.png)  
 _A Web App that turns your images into an interactive flipbook._
 
 ---
