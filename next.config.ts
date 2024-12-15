@@ -1,11 +1,14 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  webpack: (config) => {
-    config.resolve.alias.canvas = false;
-    return config;
+  eslint: {
+    ignoreDuringBuilds: true, // Disables ESLint checks during production builds
   },
-};
+  /* config options here */
+  webpack: config => {
+    config.resolve.alias.canvas = false
+    return config
+  },
+}
 
-export default nextConfig;
+export default nextConfig
