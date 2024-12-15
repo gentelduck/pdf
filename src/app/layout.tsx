@@ -4,6 +4,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { Header } from '@/components/layouts'
+import { SiteFooter } from '@/components/layouts/footer'
 
 export const metadata: Metadata = {
   title: '@duck-pdf',
@@ -22,6 +23,7 @@ export default function RootLayout({
           <div className="min-h-screen gap-16 font-[family-name:var(--font-geist-sans)]">
             <Header />
             {children}
+            <SiteFooter />
           </div>
         </TooltipProvider>
       </body>
