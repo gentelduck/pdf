@@ -23,6 +23,7 @@ import { fileTypeIcons } from "./upload.constants";
 import { getFileType } from "./upload.lib";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
+import { supabase } from "@/supabase";
 
 const UploadContext = React.createContext<UploadContextType | null>(null);
 
@@ -55,6 +56,48 @@ export const UploadProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 // Upload
+export const uploadBlobAndLinkToTable = async (
+  blob: Blob,
+  fileName: string,
+  pdf_id: string
+) => {
+  try {
+    // Upload the file to Supabase Storage bucket
+    const { data, error } = await supabase.storage
+      .from("pdfs") // Specify your bucket name
+      .upload(`${fileName}`, blob ?? new Blob(), {
+        cacheControl: "3600",
+        upsert: true, // Overwrite if file exists
+      });
+
+    if (error) {
+      console.error("Error uploading file:", error.message);
+      return;
+    }
+
+    // Insert file metadata into the `files` table (including the public URL)
+    const { data: insertData, error: insertError } = await supabase
+      .from("pdf_imgs")
+      .insert([
+        {
+          file_name: fileName,
+          file_url: `https://zphaxvznmjrdvteeuzjy.supabase.co/storage/v1/object/public/${data.fullPath}`,
+          pdf_id,
+        },
+      ])
+      .select();
+    console.log(insertData);
+
+    if (insertError) {
+      console.error("Error inserting file metadata:", insertError);
+      return;
+    }
+
+    console.log("File uploaded and linked to table:", insertData);
+  } catch (error) {
+    console.error("Error during the file upload and linking process:", error);
+  }
+};
 
 export const Upload = ({ children, trigger, content }: UploadProps) => {
   const { setAttachments, attachmentsState, setAttachmentsState } =
@@ -80,8 +123,11 @@ export const Upload = ({ children, trigger, content }: UploadProps) => {
           footer={{
             className: "Upload an attachment to your comment.",
             submit: {
-              onClick: () => {
+              onClick: async () => {
+                // Update state: Append the uploaded attachments to the list
                 setAttachments((prev) => [...prev, ...attachmentsState]);
+
+                // Clear the attachments state
                 setAttachmentsState([]);
               },
               disabled: attachmentsState.length === 0,
@@ -139,6 +185,7 @@ export const UploadInput = React.forwardRef<HTMLDivElement, UploadInputProps>(
               placeholder="Filter files..."
               type="file"
               className="absolute w-full h-full opacity-0 cursor-pointer"
+              accept="image/*"
               multiple={true}
               onChange={(e) => handleAttachment({ e, setAttachmentsState })}
             />
