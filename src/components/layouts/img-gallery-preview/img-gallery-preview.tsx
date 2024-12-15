@@ -107,11 +107,11 @@ export const GenPDF = (props: {
               </Label>
               <Input
                 id="link"
-                defaultValue={`${process.env.NEXT_PUBLIC_SITE_URL}${pdfFile}`}
+                defaultValue={`${process.env.NEXT_PUBLIC_SITE_URL}/${pdfFile}`}
                 readOnly
               />
             </div>
-            <CopyButton link={`${process.env.NEXT_PUBLIC_SITE_URL}${pdfFile}`} />
+            <CopyButton link={`${process.env.NEXT_PUBLIC_SITE_URL}/${pdfFile}`} />
           </div>
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
